@@ -1,3 +1,83 @@
+<?php
+session_start();
+
+$fname_err = $lname_err =  $email_err = $phone_err = $pass_err = $repass_err = "";
+
+$fn=$ln=$email =$phone =$pass =$repass ="";
+
+if (isset($_POST['submit'])){
+
+$fn=$_POST["fname"];
+$ln=$_POST["lname"];
+$email=$_POST["email"];
+$phone=$_POST["phone"];
+$pass=$_POST["password"];
+$repass = $_POST["repassword"];
+
+if(empty($fn)){
+  echo "<script> alert('First Name is Required'); </script>";
+  $fname_err = "error";
+}
+else{
+  if(!preg_match("/^[a-zA-Z-' ]*$/",$fn)){
+   echo "<script> alert('Only Letters and white space allowed'); </script>";
+   $fname_err = "error";
+  }
+  
+}
+
+if(empty($ln)){
+  echo "<script> alert('Last Name is Required');";
+  $fname_err = "error";
+}
+else{
+  if(!preg_match("/^[a-zA-Z-' ]*$/",$ln)){
+    echo "<script> alert('Only Letters and white space allowed');";
+    $fname_err = "error";
+  }
+}
+
+if(empty($email)){
+  echo "<script> alert('Email is Required');";
+  $email_err = "error";
+}
+else{
+  if(!filter_var($email,FILTER_VALIDATE_EMAIL)){
+    echo "<script> alert('Email is Invalid');";
+    $email_err = "error";
+  }
+}
+
+if(empty($phone)){
+  echo "<script> alert('Phone no. is Required');";
+  $phone_err = "error";
+}
+
+if(empty($pass)){
+  echo "<script> alert('Password is Required');";
+  $pass_err = "error";
+}
+
+if($pass != $repass){
+  echo "<script> alert('Password did not match');";
+  $repass_err = "error";
+}
+
+ 
+if($fname_err == '' && $lname_err == '' && $email_err =='' && $phone_err=='' && $pass_err == '' && $repass_err=''){
+      $_SESSION['fname'] = $fn;
+      $_SESSION['lname'] = $ln;
+      $_SESSION['email'] = $email;
+      $_SESSION['phone'] = $phone;
+      $_SESSION['password'] =$pass;
+      
+      header("Location:validsignupform.php");
+  }
+
+} 
+      
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -62,8 +142,9 @@
           <div class="col-md-7">
             <h3>Register</h3>
             <p class="mb-4" style="color:black">Enter User details to register</p>
-            <form action="validsignupform.php" method="POST">
-              <div class="row">
+            <form  method="POST">
+            
+            <div class="row">
                 <div class="col-md-6">
                   <div class="form-group first">
                     <label for="fname">First Name</label>
@@ -89,14 +170,13 @@
                 <div class="col-md-6">
                   <div class="form-group first">
                     <label for="phoneno">Phone Number</label>
-                    <input type="text" name="phone" class="form-control" placeholder="+00 0000 000 0000" id="phoneno">
+                    <input type="text" name="phone" class="form-control" placeholder="+9100000000000" id="phoneno">
                   </div>    
                 </div>
               </div>
                 
                 <div class="row">
-                  <div class="col-md-6">
-                
+                  <div class="col-md-6">                
                     <div class="form-group last mb-3">
                       <label for="password">Password</label>
                       <input type="password" name="password" class="form-control" placeholder="Your Password" id="password">
@@ -106,7 +186,7 @@
               
                   <div class="form-group last mb-3">
                     <label for="re-password">Re-type Password</label>
-                    <input type="password" class="form-control" placeholder="Your Password" id="re-password">
+                    <input type="password" name="repassword" class="form-control" placeholder="Your Password" id="re-password">
                   </div>
                 </div>
               </div>
@@ -120,18 +200,14 @@
               </div>
               </div>
 
-              <input type="submit" value="Register" class="btn px-5">
+              <input type="submit"  name ="submit" value="Register" class="btn px-5">
               <p><a href="loginform.php">Already registered? Back to Login</a></p>
-              
-
             </form>
           </div>
         </div>
       </div>
     </div>
-
-    
-  </div>
+ </div>
     
     
 

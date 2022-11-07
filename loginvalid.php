@@ -6,6 +6,7 @@
       $pp=$_POST["password"];
 
       $r=mysqli_query($con,"select * from customerregister");
+
       while($row=mysqli_fetch_array($r))
       {
         if($row[3]==$un)
@@ -17,13 +18,15 @@
                 header("location:index.php");
             }
             else{
-              header("location:loginform.php");
+              header("location:loginform.php?invalid_login=true");
 
             }
         }
         else
         {
-          header("location:loginform.php");
+          header("location:loginform.php?invalid_login=true");
         }
       }
+
+      
 ?>
