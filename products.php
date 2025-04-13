@@ -161,7 +161,8 @@ if($result->status=='success')
     <!-- ***** Fleet Starts ***** -->
     <?php
       $username=$_SESSION["sellerusername"];
-      $con=mysqli_connect("localhost","root","","vendorsnearyou");
+      require_once('db_connect.php');
+      $con = get_db_connection();
       
       $r=mysqli_query($con,"select * from products where pcategory=(select * from seller where scity='$citydisplay')");
       while($row=mysqli_fetch_array($r))

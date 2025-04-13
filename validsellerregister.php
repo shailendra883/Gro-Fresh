@@ -1,6 +1,7 @@
 <?php
      
-     $con=mysqli_connect("localhost","root","","vendorsnearyou");
+     require_once('db_connect.php');
+     $con = get_db_connection();
 
      $fn=$_POST["fname"];
      $ln=$_POST["lname"];
@@ -19,7 +20,8 @@
 
      
 
-       $r=mysqli_query($con,"insert into seller(sfname,slname,susername,semail,sphone,sshopname,sshopcategory,sstreet,scity,sstate,scountry,spincode,spassword) values('$fn','$ln','$un','$email','$phone','$shop','$shopno','$street','$city','$state','$country','$pin','$pass') ");
+       $hashed_password = password_hash($pass, PASSWORD_DEFAULT);
+       $r=mysqli_query($con,"insert into seller(sfname,slname,susername,semail,sphone,sshopname,sshopcategory,sstreet,scity,sstate,scountry,spincode,spassword) values('$fn','$ln','$un','$email','$phone','$shop','$shopno','$street','$city','$state','$country','$pin','$hashed_password') ");
        if($r)
        header("location:sellerlogin.php?register=true");
    

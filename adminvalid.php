@@ -1,31 +1,28 @@
 <?php
     session_start();
-      $con=mysqli_connect("localhost","root","","vendorsnearyou");
+    require_once 'db_connect.php';
+    $con = get_db_connection();
 
-      $un=$_POST["username"];
-    
-      $pp=$_POST["password"];
+    // Get sanitized inputs
+    $un = mysqli_real_escape_string($con, $_POST["username"]);
+    $pp = $_POST["password"];
 
-      $r=mysqli_query($con,"select * from admin");
-      while($row=mysqli_fetch_array($r))
-      {
-        if($row[0]==$un or $row[1]==$un)
-        {
-            if($row[2]==$pp)
-            { 
-                $_SESSION["alog"]="yes";
-                header("location:Admin.php");
-            }
-            else
-            {
-              header("Location:adminlogin.php?invalid_login=true");
-            }
+    // Query with prepared statement (using correct column names)
+    $stmt = mysqli_prepare($con, "SELECT password FROM admin WHERE adminid = ? OR email = ? LIMIT 1");
+    mysqli_stmt_bind_param($stmt, "ss", $un, $un);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    if($row = mysqli_fetch_assoc($result)) {
+        if($pp === $row['password']) {
+            $_SESSION["alog"] = "yes";
+            header("location:Admin.php");
+            exit();
         }
-        else
-            {
-              header("Location:adminlogin.php?invalid_login=true");
-            }
-        
-      }
+    }
+    
+    // Login failed
+    header("Location:adminlogin.php?invalid_login=true");
+    exit();
 
 ?>

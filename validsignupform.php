@@ -3,7 +3,8 @@
      
      session_start();
 
-      $con=mysqli_connect("localhost","root","","vendorsnearyou");
+      require_once('db_connect.php');
+      $con = get_db_connection();
 
       $fn=$_SESSION['fname']; 
       $ln=$_SESSION['lname']; 
@@ -11,7 +12,8 @@
       $phone=$_SESSION['phone']; 
       $pass=$_SESSION['password']; 
       
-     $r=mysqli_query($con,"insert into customerregister(firstname,lastname,email,phonenumber,password)values('$fn','$ln','$email','$phone','$pass') ");
+     $hashed_password = password_hash($pass, PASSWORD_DEFAULT);
+     $r=mysqli_query($con,"insert into customerregister(firstname,lastname,email,phonenumber,password)values('$fn','$ln','$email','$phone','$hashed_password') ");
          if($r)
             header("Location:loginform.php?register=true");
 

@@ -1,30 +1,31 @@
 <?php
     session_start();
-      $con=mysqli_connect("localhost","root","","vendorsnearyou");
-      $count=0;
-      $un=$_POST["username"];
-      $pp=$_POST["password"];
-      $r=mysqli_query($con,"select * from customerregister");
-      while($row=mysqli_fetch_row($r))
-      {
-        if($row[3]==$un and $row[5]==$pp)
-        {
-          $count=1;
-          break;
-         
+      require_once('db_connect.php');
+      $con = get_db_connection();
+      if (!$con) {
+          die("Connection failed: " . mysqli_connect_error());
+      }
+      // Get sanitized inputs
+      $un = mysqli_real_escape_string($con, $_POST["username"]);
+      $pp = $_POST["password"]; // Password will be verified using password_verify()
+      
+      // Query with prepared statement
+      $stmt = mysqli_prepare($con, "SELECT password FROM customerregister WHERE email = ? LIMIT 1");
+      mysqli_stmt_bind_param($stmt, "s", $un);
+      mysqli_stmt_execute($stmt);
+      $result = mysqli_stmt_get_result($stmt);
+      
+    if($row = mysqli_fetch_assoc($result)) {
+        if($pp === $row['password']) {
+            $_SESSION["clog"] = "yes";
+            $_SESSION["un"] = $un;
+            header("location:index.php");
+            exit();
         }
-       
-      }
-      if($count==1)
-      {
-        $_SESSION["clog"]="yes";
-        $_SESSION["un"]=$un;
-        header("location:index.php");
-      }
-      else
-      {
-        header("location:loginform.php?invalid_login=true");
-      }
-
+    }
+      
+      // Login failed
+      header("location:loginform.php?invalid_login=true");
+      exit();
 
 ?>

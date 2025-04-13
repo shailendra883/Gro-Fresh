@@ -1,6 +1,7 @@
 <?php
      
-     $con=mysqli_connect("localhost","root","","vendorsnearyou");
+     require_once('db_connect.php');
+     $con = get_db_connection();
 
      $fn=$_POST["fname"];
      $ln=$_POST["lname"];

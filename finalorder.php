@@ -5,7 +5,8 @@ session_start();
             $dt=$_POST["dt"];
 
 
-              $con=mysqli_connect("localhost","root","","vendorsnearyou");
+              require_once 'db_connect.php';
+              $con = get_db_connection();
               $rr=mysqli_query($con,"insert into orders(orderdate,amount,username) values('$dt','$total','$unm')");
 
               if($rr)

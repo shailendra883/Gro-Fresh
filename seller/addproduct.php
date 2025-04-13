@@ -101,7 +101,8 @@
                 </div>
                 <?php
       $username=$_SESSION["sellerusername"];
-      $con=mysqli_connect("localhost","root","","vendorsnearyou");
+      require_once('db_connect.php');
+      $con = get_db_connection();
       $r=mysqli_query($con,"select p_id,p_name,p_desc,price,image from products p, seller s where s.sshopcategory=p.pcategory and s.susername='$username'");
       while($row=mysqli_fetch_array($r))
           {

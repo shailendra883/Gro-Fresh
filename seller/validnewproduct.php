@@ -1,6 +1,7 @@
 <?php
      
-     $con=mysqli_connect("localhost","root","","vendorsnearyou");
+     require_once('db_connect.php');
+     $con = get_db_connection();
 
      $pn=$_POST["pname"];
      $pc=$_POST["food"];

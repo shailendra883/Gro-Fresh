@@ -151,7 +151,8 @@
     <div class="col-lg-6 py-3 wow ">
     <?php
       $un=$_SESSION["un"];
-      $con=mysqli_connect("localhost","root","","vendorsnearyou");
+      require_once 'db_connect.php';
+      $con = get_db_connection();
       
       $r=mysqli_query($con,"select * from customerregister where email='$un'");
       while($row=mysqli_fetch_array($r))

@@ -432,7 +432,8 @@
 
 	<?php
 	 $sno=1;
-	     $con=mysqli_connect("localhost","root","","vendorsnearyou");
+	     require_once('db_connect.php');
+         $con = get_db_connection();
          $s=mysqli_query($con,"select * from seller");
 	  
 	     

@@ -123,7 +123,8 @@
 	<?php
 	 $sno=1;
      $username=$_SESSION["sellerusername"];
-	     $con=mysqli_connect("localhost","root","","vendorsnearyou");
+	     require_once('db_connect.php');
+         $con = get_db_connection();
          $s=mysqli_query($con,"select p_id, p_name,p_desc,price from products p, seller s where s.sshopcategory=p.pcategory and s.susername='$username'");
 	  
 	     

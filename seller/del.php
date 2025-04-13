@@ -1,7 +1,8 @@
 <?php
    
     $id=$_REQUEST["a"];
-	$con=mysqli_connect("localhost","root","","vendorsnearyou");
+	require_once('db_connect.php');
+    $con = get_db_connection();
 	
 	$r=mysqli_query($con,"delete from products where p_id=$id");
 	if($r)

@@ -218,8 +218,9 @@ if(isset($_GET["action"]))
 			<br />
 			<br /><br />
 			<?php
-              $connect=mysqli_connect("localhost","root","","vendorsnearyou");
-				$query = "select * from products where pcategory='fruitsveggies'";
+              require_once('db_connect.php');
+              $connect = get_db_connection();
+              $query = "select * from products where pcategory='fruitsveggies'";
 				$result = mysqli_query($connect, $query);
 				if(mysqli_num_rows($result) > 0)
 				{
